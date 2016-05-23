@@ -41,7 +41,8 @@ xpath7 = '//a[@class="l3 talk-topics__link ga-link"]/text()'
 def scrap_talk(url):
 ################################################################################
   # Import global elements
-  global adder, xpath1, xpath2, xpath3, xpath4, xpath5, xpath6, xpath7, xpath8
+  global adder, xpath1, xpath2, xpath3, xpath4, xpath5, xpath6, xpath7
+  #global adder, xpath1, xpath2, xpath3, xpath4, xpath5, xpath6, xpath7, xpath8
   
   # Intend of scrapping
   try:
@@ -99,7 +100,8 @@ def scrap_talk(url):
       #end_text += 'Title: ' + title + '\n' + 'Speaker: ' + speaker + '\n\n'
       end_text += 'Title: ' + title + '\n' + 'Speaker: ' + speaker + '\n'
       end_text += 'Date: ' + ted_date + '\n' + 'Tags: ' + tags + '\n'
-      end_text += 'Shares: ' + n_views + '\nTopics: ' + topics_list + '\n\n'
+      end_text += 'Shares: ' + n_views + '\nTopics: ' + topics_list + '\n'
+      end_text += 'Original URL: ' + mother_url + '\n\n'
       
       # The HTML contains the text stripped in various elements
       end_talk = ''
@@ -150,6 +152,7 @@ while len(queue_links) > 0:
         link = 'http://www.ted.com' + link
         queue_links.append(link)
 
+print 'Done!\n'
 ################################################################################
 # END OF SCRIPT
 ################################################################################

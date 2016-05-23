@@ -11,11 +11,12 @@ cat('File read:', file, '\n')
 
 # Identify strings that cut between talks
 headers <- grep('^Title: ', ted)
+cat('Number of talks identified:', length(headers), '\n')
 
 # Create an empty data.frame to store all information
-cols <- c('title', 'speaker', 'date', 'tags', 'n_shares', 'topics', 'text')
-talks <- as.data.frame(matrix(nrow = length(headers), ncol = 7))
-colnames(talks) <- cols
+talks <- as.data.frame(matrix(nrow = length(headers), ncol = 8))
+colnames(talks) <- c('title', 'speaker', 'date', 'tags', 'n_shares',
+                     'topics', 'text', 'url')
 
 # Loop over talks
 for (h in headers) {
@@ -34,14 +35,23 @@ for (h in headers) {
   talks[ctoken, 4] <- gsub('Tags: ', '', ted[h + 3])
   talks[ctoken, 5] <- as.numeric(gsub('Shares: ', '', ted[h + 4]))
   talks[ctoken, 6] <- gsub('Topics: ', '', ted[h + 5])
+  talks[ctoken, 8] <- gsub('Original URL: ', '', ted[h + 6])
 
   # Concatenate the text in a readable form
   text <- ''
-  for (j in (h + 6):(ntoken - 1)) {
+  for (j in (h + 7):(ntoken - 1)) {
     text <- paste(text, ted[j])
   }
+  text <- gsub('\\(Music\\)', '', text)
+  text <- gsub('\\(Applause\\)', '', text)
+  #text <- gsub('\\(Laughter)\\)', '', text)
+  text <- gsub('\\s{2,}', ' ', text)
   talks[ctoken, 7] <- gdata::trim(text)
 }
+
+# Some talks are music / dance / others
+talks <- talks[which(nchar(talks[, 'text']) > 0), ]
+cat('Valid formatted talks:', nrow(talks), '\n')
 
 # Save the data in various formats
 save(talks, file = 'data/scrapped_ted_talks.RData')
