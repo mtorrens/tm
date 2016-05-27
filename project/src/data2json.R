@@ -42,16 +42,18 @@ for (h in headers) {
   for (j in (h + 7):(ntoken - 1)) {
     text <- paste(text, ted[j])
   }
-  text <- gsub('\\(Music\\)', '', text)
-  text <- gsub('\\(Applause\\)', '', text)
-  #text <- gsub('\\(Laughter)\\)', '', text)
-  text <- gsub('\\s{2,}', ' ', text)
-  talks[ctoken, 7] <- gdata::trim(text)
+  # suppress <- c('\\(Music\\)', '\\(Applause\\)')#, '\\(Laughter)\\)')
+  # for (sup in suppress) {
+  #   text <- gsub(sup, '', text)
+  # }
+  # #text <- iconv(text, from = 'utf-8', to = 'ASCII//TRANSLIT')
+  talks[ctoken, 7] <- gdata::trim(gsub('\\s{2,}', ' ', text))
 }
 
 # Some talks are music / dance / others
 talks <- talks[which(nchar(talks[, 'text']) > 0), ]
 cat('Valid formatted talks:', nrow(talks), '\n')
+#head(talks[order(nchar(talks[, 'text'])), ], 10)
 
 # Save the data in various formats
 save(talks, file = 'data/scrapped_ted_talks.RData')
