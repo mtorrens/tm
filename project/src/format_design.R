@@ -1,4 +1,4 @@
-#source('~/Desktop/tm_ted/src/data2json.R')
+#source('~/Desktop/tm_ted/src/format_design.R')
 # Working directory
 PATH <- '~/Desktop/tm_ted/'
 setwd(PATH)
@@ -14,9 +14,9 @@ headers <- grep('^Title: ', ted)
 cat('Number of talks identified:', length(headers), '\n')
 
 # Create an empty data.frame to store all information
-talks <- as.data.frame(matrix(nrow = length(headers), ncol = 8))
+talks <- as.data.frame(matrix(nrow = length(headers), ncol = 10))
 colnames(talks) <- c('title', 'speaker', 'date', 'tags', 'n_shares',
-                     'topics', 'text', 'url')
+                     'topics', 'text', 'url', 'duration', 'filmed')
 
 # Loop over talks
 for (h in headers) {
@@ -35,11 +35,13 @@ for (h in headers) {
   talks[ctoken, 4] <- gsub('Tags: ', '', ted[h + 3])
   talks[ctoken, 5] <- as.numeric(gsub('Shares: ', '', ted[h + 4]))
   talks[ctoken, 6] <- gsub('Topics: ', '', ted[h + 5])
-  talks[ctoken, 8] <- gsub('Original URL: ', '', ted[h + 6])
+  talks[ctoken, 8] <- gsub('Original URL: ', '', ted[h + 8])
+  talks[ctoken, 9] <- gsub('Time: ', '', ted[h + 6])
+  talks[ctoken, 10] <- gsub('Filmed: ', '', ted[h + 7])
 
   # Concatenate the text in a readable form
   text <- ''
-  for (j in (h + 7):(ntoken - 1)) {
+  for (j in (h + 9):(ntoken - 1)) {
     text <- paste(text, ted[j])
   }
   # suppress <- c('\\(Music\\)', '\\(Applause\\)')#, '\\(Laughter)\\)')
@@ -52,6 +54,7 @@ for (h in headers) {
 
 # Some talks are music / dance / others
 talks <- talks[which(nchar(talks[, 'text']) > 0), ]
+talks <- talks[which(talks[, 'n_shares'] > 0), ]
 cat('Valid formatted talks:', nrow(talks), '\n')
 #head(talks[order(nchar(talks[, 'text'])), ], 10)
 

@@ -15,11 +15,12 @@ def doc_term_matrix(corpus):
 
 def term_vector(document):
   global token_set
+  aux = list(token_set)
   vector = [0] * len(token_set)
   words = list(set(document))
   counter = Counter(document)
   for i in range(len(words)):
-    vector[list(token_set).index(words[i])] = counter[words[i]]
+    vector[aux.index(words[i])] = counter[words[i]]
   return vector
 
 def dict_rank(dictionary, use_tf_idf, ntop):

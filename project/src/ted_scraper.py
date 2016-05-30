@@ -35,13 +35,14 @@ xpath5 = '//a[@class=""]/@href'
 xpath6 = '//span[@class="talk-sharing__value"]/text()'
 xpath7 = '//a[@class="l3 talk-topics__link ga-link"]/text()'
 #xpath8 = '//span[@class="player-hero__meta__label"]/text()'
+xpath8 = '//div[@class="player-hero__meta"]/span/text()'
 ################################################################################
 
 ################################################################################
 def scrap_talk(url):
 ################################################################################
   # Import global elements
-  global adder, xpath1, xpath2, xpath3, xpath4, xpath5, xpath6, xpath7
+  global adder, xpath1, xpath2, xpath3, xpath4, xpath5, xpath6, xpath7, xpath8
   #global adder, xpath1, xpath2, xpath3, xpath4, xpath5, xpath6, xpath7, xpath8
   
   # Intend of scrapping
@@ -90,8 +91,15 @@ def scrap_talk(url):
         else:
           topics_list = ''
         
-        ## Alternative date
-        #new_date = mother_body.xpath(xpath8)
+        # Alternative date
+        res = mother_body.xpath(xpath8)
+        if res:
+          vtime = res[0].replace('\n', '')
+          vtime = vtime.replace(' ', '')
+          alt_date = res[2].replace('\n', '')
+        else:
+          vtime = '0'
+          alt_date = ''
         
       except urllib2.HTTPError:
         n_views = '0'
@@ -101,6 +109,7 @@ def scrap_talk(url):
       end_text += 'Title: ' + title + '\n' + 'Speaker: ' + speaker + '\n'
       end_text += 'Date: ' + ted_date + '\n' + 'Tags: ' + tags + '\n'
       end_text += 'Shares: ' + n_views + '\nTopics: ' + topics_list + '\n'
+      end_text += 'Time: ' + vtime + '\nFilmed: ' + alt_date + '\n'
       end_text += 'Original URL: ' + mother_url + '\n\n'
       
       # The HTML contains the text stripped in various elements

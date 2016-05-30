@@ -13,7 +13,7 @@ from math import log
 
 ################################################################################
 # Working directory
-print 'Script: LDA Analysis\nOrientative execution time: ~1H'
+print 'Script: LDA Analysis\nOrientative execution time: ~1H30'
 root = '/Users/miquel/Desktop/tm_ted'
 os.chdir(root)
 print 'Changed project path to: ' + root
@@ -80,19 +80,36 @@ stem_list = [remove_stopwords(stem_list[i]) for i in range(len(stem_list))]
 token_set = corpus_tokens(stem_list)
 
 # Compute the document term matrix
+print 'Creating document term matrix (this may take a while)...'
 if compute_dtm:
-  print 'Creating document term matrix...'
   res = doc_term_matrix(stem_list)
   dtm = np.array(res)
   print 'Done.'
 
   # Save the document term matrix
   #savetxt_compact('data/dtm.csv', dtm, delimiter = ',')
-  print 'Written document term matrix: data/dtm.csv'
+  print 'Writing DTM file... data/dtm.csv'
   with open('data/dtm.csv', 'wb') as obj:
     writer = csv.writer(obj)
     writer.writerow(list(token_set))
     writer.writerows(dtm)
+else:
+  res = []
+  with open('data/dtm.csv', 'rb') as obj:
+    content = csv.reader(obj)
+    for row in content:
+      res.append(row)
+      #dtm.join(row)
+  #dtm = np.array(res[1:len(res)], dtype = 'i')
+  dtm = np.array(res[1:len(res)], dtype = 'f')
+  res = res[1:len(res)]
+  fres = []
+  for elem in res:
+    felem = []
+    for item in elem:
+      felem.append(float(item))
+    fres.append(felem)
+  res = fres
 
 # Set unique tags
 unique_tags = []
@@ -196,6 +213,10 @@ with open('data/sentiment.csv', 'wb') as obj:
 print 'Performing LDA:'
 n_topics = 12
 model = lda.LDA(n_topics = n_topics, n_iter = 3000, random_state = 1)
+
+# Small tweak
+if not compute_dtm:
+  dtm = np.array(dtm, dtype = np.int64)
 
 # Fit the model
 model.fit(dtm)

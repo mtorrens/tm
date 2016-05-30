@@ -1,0 +1,11 @@
+Script started on Sat May 28 10:19:50 2016
+[?1034hbash-3.2$ script="$0"
+bash-3.2$ root="$(dirname $script)"
+bash-3.2$ root
+bash: root: command not found
+bash-3.2$ root$root
+bash: /bin: is a directory
+bash-3.2$ exit
+exit
+
+Script done on Sat May 28 10:20:47 2016
