@@ -10,6 +10,7 @@
 \usepackage{wrapfig} % Allows in-line images
 \usepackage[euler]{textgreek}
 
+\usepackage{float}
 \usepackage{tikz}
 \usepackage{dcolumn}
 \usepackage{mathpazo} % Use the Palatino font
@@ -76,13 +77,13 @@ With the full expansion of the Internet worldwide and the appearence of massive 
 %------------------------------------------------
 \section*{Framework}
 
-During the 21st century, the amount of media content available to the average user has increased exponentially with the expansion of the Internet. Online media offer a varied, plural and sizeable range of content compared to traditional sources of general information. To that, we should pair the fact that the current consumer of such content has increased their education and expanded the limits of their interests. Nowadays, it is not strange to see considerable interest in content related to subjects on which the generic user may have superficial knowledge, such as science or technology. At the same time, the communication tools and skills of experts on these fields have evolved enough to make them attractive to the general public. It is not rare to see semi-technical content in magazines, newspapers and online media of general interest, which may have not been equally common some years ago.
+During the 21st century, with the expansion of the Internet, the amount of media content available to an average consumer has increased exponentially. Online media offer a varied, plural and sizeable range of content compared to traditional sources of general information. To that, we should pair the fact that current users of such content have increased their education and expanded the limits of their interests. Nowadays, it is not strange to see considerable social interest in content related to subjects on which the generic user may have superficial knowledge, e.g. interest in mass divulgation of science or technology. At the same time, the communication tools and skills of experts on these fields have evolved enough to make them attractive to the general public. It is not rare to see semi-technical content in magazines, newspapers and online media of generalist nature, which may have not been equally common some years ago.
 
-Simultaneously, the bloom of content has forced consumers to be more selective, since the time available for consumption has not increased at the path of the available content. With that, the importance of quality over quantity has become more relevant, and thus with a wide range of choice, the composition of the content stands out as an important factor of decision. More options imply being more restrictive in the consumption choice, and we will try to analyse how the topic of this content will affect the selection.
+Simultaneously, the bloom of content has forced consumers to be more selective, since the time available for consumption has not increased at the path of the available content. With that, the importance of quality over quantity has become more relevant, and thus with a wide range of choice, the composition of the content stands out as an important factor of decision. More options imply being more restrictive in the consumption choice, and the topic of this content may very well have an effect on this selection.
 
-In this project, we intend to investigate towards this direction, by examining what features of the content of a speech are boosting the amount of attention that consumers pay to it. To do so, we analyse the content of the speeches published online at the popular multimedia website TED Talks, and we will measure how the composition of the talks is explaining the number of visits that they are receiving online. Since the website is free and open to anyone, and it contains content related to any sort of topic, we are especially interested in understand wether the topic of the content can have an effect on the final consumption aggregates.
+In this project, we intend to investigate towards this direction, by examining what features of the content of a speech are boosting the amount of attention that consumers pay to it. As a proxy to do so, we analyse the content of the speeches published online at the popular multimedia website TED Talks. We will measure how the composition of the talks is explaining the number of visits that they are receiving online. Since the website is free and open to anyone, and it contains content related to any sort of topic, it is of especial interest to understand wether the topic of the content can have an effect on the final consumption aggregates. This may be able to tell us how sensitive the same consumer is to content of very different nature.
 
-This is a fundamental question in the media industry, since the atomization of content among all suppliers is forcing producers to put a strong emphasis on what content is actually published. Understanding which topics and what characteristics of it will partially determine the attractiveness of publications is an issue quite relevant from a sociologic, economic and entrepreneurial point of view.
+This is a fundamental question in the media industry, since the atomization of content among all suppliers is forcing producers to put a strong emphasis on what content is actually published. Understanding which topics and what characteristics of it will partially determine the attractiveness of publications is an issue relevant from a sociologic, economic and entrepreneurial point of view, with lasting consequences in the media or education business, among many other marketing-based sectors.
 %------------------------------------------------
 
 %------------------------------------------------
@@ -92,27 +93,27 @@ The data used for this project consist of the transcripts of all talks posted on
 
 \begin{itemize}
 \item Transcript of the talk, i.e. raw text of all statements said during the speech.
-\item Title of the talk
-\item Full name of the speaker performing
-\item Date in which the talk was posted online, in month format
-\item Date in which the talk was filmed, in month format
-\item Number of visualisations of the talk online at the moment of retrieval
-\item Duration of the talk, in seconds
-\item Set of qualitative tags assigned to the talk, which are adjectives that are suitable in each case, e.g. "inspiring", "ingenious", "beautiful"... These are voted by users from a set of adjectives made available by the website. Then, the website tags the speeches with the top voted options.
-\item Set of topics, e.g. "communications", "future", "parenting"... This set of topics is more diverse and is assigned by the website, without user interaction.
+\item Title of the talk.
+\item Full name of the speaker performing.
+\item Date in which the talk was posted online, in monthly format.
+\item Date in which the talk was filmed, in monthly format.
+\item Number of visualisations of the talk online at the moment of retrieval.
+\item Duration of the talk, in seconds.
+\item Set of qualitative tags assigned to the talk, which are adjectives that are suitable in each case, e.g. "inspiring", "ingenious", "beautiful", among others. These are voted by users from a set of adjectives made available by the website. Then, the website tags the speeches with the two highest voted options.
+\item Set of topics assigned to the talk, e.g. "communications", "future", "parenting", among others. This set of topics is more diverse and is assigned by the website, without user interaction.
 \end{itemize}
 
 All data collected date as of June 1, 2016. The scrapper was launched at 9.00 AM GMT and the information retrieval lasted for about two hours. It was performed backward in time, which means that older talks were retrieved later, thus there might be a small difference to what would be considered a snapshot of the website. No other source was used as input for the project.
 
 The data retrieved comprise a period of ten years of posted material, between June 2006 and May 2016. Nevertheless, the content posted may have been filmed prior to the uploading date, which means that a few talks were actually filmed in the early 2000s, or even before.
 
-In the end, a total of 2,130 talks were successfully collected from the website. A small additional percentage of talks ---between 1\% and 2\%--- was not available in transcript mode and thus were not regarded. These are mainly concentrated within older talks. A handful of them were also disregarded because they were purely performance shows, such as music or dancing, which had no textual content to be analysed.
+In the end, a total of 2,130 talks were successfully collected from the website. A small additional percentage of talks ---between 1\% and 2\%--- was not available in transcript mode or had no metadata available, and thus was not regarded. These are mainly concentrated within older talks. A handful of them were also disregarded because they were purely performance shows, such as music or dancing, which had no textual content to be analysed.
 %------------------------------------------------
 
 %------------------------------------------------
 \section*{Methodology}
 
-We will try to build a model that explains how the number of visualisations online of the speech is affected by the textual content of the talk. For that, we will exploit dictionary methods on the speeches, as well as a Latent Dirichlet Allocation (LDA) model that will provide probabilities of the talks belonging to a number of topics.
+We will try to build a model that explains how the number of visualisations online of the speech is affected by the textual content of the talk. For that, we will exploit dictionary methods on the speeches, as well as a Latent Dirichlet Allocation (LDA) model that will provide probabilities of the talks belonging to a number of topics ---see \cite{lda}---.
 
 The entire material and the code for this project can be found in the following Github repository:
 
@@ -120,7 +121,7 @@ The entire material and the code for this project can be found in the following 
 \item \texttt{https://github.com/mtorrens/tm/tree/master/project}
 \end{itemize}
 
-We divide this section in the text mining and analysis part, and the viewership econometric model subsection.
+We divide this section in two parts: first, the text mining and analysis and, second, the viewership statistical model.
 
 \subsection*{Text analysis}
 
@@ -131,7 +132,7 @@ As a first step, cleaning the raw text requires some effort and discussion. The 
 \item Cleaning the set of tokens: only those tokens that are not numbers or years are kept, i.e. a string such as "1950" is suppressed. In this context, it is helpful as this sort of tokens are not useful in topic detection, given that the plurality of topics is wide enough.
 \item Removing stopwords: all tokens that include little meaning or that are too abundant are kept out of the model. These include pronouns, frequent connectors, modal verbs, articles and highly-frequent verbs, e.g. "this", "which", "me", "not", "thing", "go", among many others. The full list of stopwords used for this corpus can be found in the aforementioned Github repository.
 \item Removing rare words: words that once stemmed appear only once in the whole corpus are considered rare, and they are removed from the documents. In our varied set of documents, this is a relevant fraction of the unique words observed, although they are by definition a small fraction of the actual words used. This step has been quite helpful in the dimensionality reduction of the document term matrix, with its subsequent computations.
-\item Stemming: to stem the words, the Porter stemmer has been employed.
+\item Stemming: to stem the words, the Porter stemming algorithm has been employed.
 \end{enumerate}
 
 After all these operations, the final set of tokens is reduced to 21,944 unique terms.
@@ -140,10 +141,11 @@ Once the set of tokens is established, the document term matrix (DTM) is built a
 
 For the sentiment score, the AFINN-111 set of rated words has been employed. Both the cumulative and the relative sentiment scores have been computed for all documents, which will be another ingredient for the viewership model.
 
-The main text mining technique used for the model, however, will be the exploration of topics of the talks, through an LDA on the documents. The Gibbs sampler is run for 3,000 iterations over the 2,130 documents and a size of the voabularyof 21,944 unique terms. The total number of words is of 1,729,588 words. After trying a set of different number of topics, ranging from 5 to 20, the final choice has been $K=12$. The reason for this value is the clarity of the resulting top words used for each topic, which appear to naturally cluster in a clear set of topics. Also, the visualisation of the most-likely topic allocation on the titles of the talks seem appropriate in the vast majority of manually checked cases. The choice of number of iterations run responds to the long stabilisation of the log-likelihood after each iteration of the Gibbs sampler is run.
+The main text mining technique used for the model, however, will be the exploration of topics of the talks, through an LDA on the documents. The Gibbs sampler is run for 3,000 iterations over the 2,130 documents and a size of the voabularyof 21,944 unique terms. The total number of words is of 1,729,588 words. After trying a set of different number of topics, ranging from 5 to 20, the final choice has been $K=12$. The reason for this value is the clarity of the resulting top words used for each topic, which appear to naturally cluster in a clear set of topics, without merging dissimilar ones. Also, the visualisation of the most-likely topic allocation on the titles of the talks seem appropriate in the vast majority of manually checked cases. The choice of number of iterations run responds to the long stabilisation of the log-likelihood after each iteration of the Gibbs sampler is run.
 
 The twelve resulting topics have as most used words the following list:
 
+\begin{small}
 \begin{verbatim}
 Topic 0: life, year, women, live, stori, day, time, peopl, school, love
 Topic 1: design, citi, build, work, creat, space, project, art, place, kind
@@ -158,6 +160,7 @@ Topic 9: think, peopl, differ, know, human, mean, question, time, kind, much
 Topic 10: music, play, laughter, applaus, sound, game, word, languag, hear, thank
 Topic 11: comput, data, technolog, actual, inform, peopl, internet, world, start, year
 \end{verbatim}
+\end{small}
 
 From now on, we will name the topics as follows:
 
@@ -178,6 +181,7 @@ From now on, we will name the topics as follows:
 
 In parenthesis we have shown in what percentage of the documents, the topic is assigned with highest probability. We report what is the topic with maximum likelihood for the first ten documents, together with the title of the talk:
 
+\begin{small}
 \begin{verbatim}
 A smarter, more precise way to think about public health (top topic: 2)
 Why I bring theater to the military (top topic: 7)
@@ -190,6 +194,7 @@ The laws that sex workers really want (top topic: 5)
 Our lonely society makes it hard to come home from war (top topic: 5)
 Good news in the fight against pancreatic cancer (top topic: 2)
 \end{verbatim}
+\end{small}
 
 We also report what is the correlation matrix between the resulting probabilities:
 
@@ -240,21 +245,35 @@ With these, the full design matrix for the model consists of 1,749 speeches with
 We build two OLS models. The first one is a preliminary model that regresses the outcome of the LDA probabilities on the logarithm of the number of views. The second one includes the control variables, as well as the rest of text features aforementioned.
 
 The results can be examnined in the following Table 1:
+\pagebreak
 
 \begin{center}
 \input{reg_table.tex}
 \end{center}
+%\thispagestyle{empty}
+%\pagebreak
+As we can see, the general explanatory power of the models is satisfactory. LDA probabilities alone already achieve an adjusted $R^2 = 0.106$, which is boosted up to $R^2 = 0.248$ when all the features are taken into account.
 
-As we can see, the general explanatory power of the models is satisfactory. LDA probabilities alone already achieve and $R^2 = 0.106$, which is boosted up to $0.248$ when all the features are taken into account.
+The first model is an initial approximation to spot if the topic allocation is significant, regardless of the rest of the features. Some of the additional features will encode the topic allocation partly, via the tags, and thus it is relevant to see the LDA result cleanly. We should bear in mind that some dummy variables explicitely include the name of the topic we have assigned. Then, in the basic model, most of the topics show significance at some tight level, with the exception of performance and technology. Arts, health, environment, politics and economy raise significantly less interest than the topic of reference, Universe. Contrarily, entertainment and philosophy exhibit higher interest, and with 10\% significance we could also add intelligence to the group.
+
+In the second model, the full model, all signs for LDA probabilities among significant predictors are maintained, however significance of topic economy drops to the 5\%-10\% level, and society and intelligence lose their significance at any level. In this model, the control variables make their way in, and we observe that the duration of the post affects negatively the number of views. This can be caused by the fact that the increasing popularity of TED affects positively more recently posted talks. Also, recurrent speakers seem to attract more attention, which is logical ---although the causality is not clear at all---. The duration of the talk is not significant, which leads us to believe that the length of the speech has less effect on viewership than one could especulate \textit{a priori}. This is not masked by the coefficient of number of words, as despite being correlated, excluding either of them from the model does not affect their separate lack of significance.
+
+With respect to text features, the results show no significance of either the DTM or the TF-IDF scores. Their rank was also used as variation without better results. This is somewhat expected given the plurality of topics and the dissimilarity of the set of speeches. The sentiment score, on the other hand, shows significance only at the 10\% level and indicates, if we relied on its sign, that negativity on the sentiment can benefit the number of views.
+
+As for the qualitative tags, we observe that those talks voted as "fascinating", "funny", "inspiring" and "jaw-dropping" have more visits than the rest. The other tags showed no significance in the intermediate models and were dropped in the final model. These results seem plausible, as stronger adjectives as the ones mentioned encourage visualisation in comparison to softer --non-significant--- adjectives such as "beautiful", "courageous" or "persuasive".
+
+In the case of topics, we observed strong significance for some of them. The set of topic tags that exhibit a positive effect on the number of views are "brain", "culture", "business" and "conference", whereas "change", "art", "politics", "war", "global issues", "technology", "design", "science" and "AI" show a negative effect, both presented in order of decreasing magnitude. "Music" also shows a negative effect, but only at 10\% level of significance. Although individually these topics appear to be significant, there is no clear pattern to distinct on a higher topic-level what topics help boosting visualisation counts.
 
 %------------------------------------------------
 
 %------------------------------------------------
 \section*{Conclusions}
 
-Paraghraph 1
+The determinants affecting the popularity of online content are varied and complex. In this project, we have tried to simplify this popularity by pure raw text characteristics of the composition of such content using the set of available TED talks. After performing the aforementioned text mining techniques, we have built an explanatory model to analyse to what extend these textual features can explain the variations in number of online views of each talk. Our model has good explanatory power, taking into account the nature and amount of information we can gather from the website.
 
-Paraghraph 2
+Results seem to suggest that the topic of the content has strongly significant importance on the view counts, as well as the user-tagged impressions that the content has on viewers. We have spotted a set of topics that draw relatively more attention than others, both using non-supervised methods and user-tagged topics. This outcome, however, does not clearly separate sets of topics that one could hierarchically cluster, that is, meta-topics that can draw more or less attention. A possible explanation for that is that the wide variety of content available allows for different user profiles to consume content separately different meta-topics. On the other hand, other predictors that one might consider relevant, such as length or sentiment of the content, do not show strong significance on the outcome results, and so do not seem to be related to popularity after all.
+
+All in all, this is simple but insightful information on understanding how the text features of content can explain its popularity, and an example on how many media and content-based businesses can easily extract information from their text data in order to answer basic but fundamental questions of their industry. One must be careful, however, on applying the Lucas critique to these results. The fact that we may understand to some extent what drives popularity does not mean that adapting our content will boost it. As soon as the suppliers adapt their behavior to meet such demand, the validity of these results may be invalidated and the dynamics of the current drivers of content popularity could be alter irreversibly. Therefore, even if the outcome can be insightful, the line of action is beyond the scopre these results and remains open question to this point.
 %------------------------------------------------
 
 %----------------------------------------------------------------------------------------
@@ -273,18 +292,27 @@ Paraghraph 2
 \bibitem{lda}
 Blei, D.M.; Ng, A.Y. and Jordan, M.I. (2003).
 \textit{Latent Dirichlet Allocation}.
-Journal of Machine Learning Research 3 (4-5): pp. 993-1022.
+Journal of Machine Learning Research, 3 (4-5): pp. 993-1022.
 
 \bibitem{notes}
 Hansen, S.E. (2016).
 \textit{Text Mining for Economics and Finance}. Course lectures.
 Barcelona Graduate School of Economics, Barcelona. Spring 2016. 
 
+\bibitem{afinn}
+Nielsen, F.\AA. (2011).
+\textit{AFINN-111: English words rated for valence}.
+Website: \texttt{http://www.wjh.harvard.edu/~inquirer/}.
+
+\bibitem{inquirer}
+\textit{General Inquirer Harvard-IV-4}.
+Website: \texttt{http://www.wjh.harvard.edu/\~inquirer/}.
+
 \bibitem{ted}
 \textit{TED Talks: Ideas worth spreading}.
 Website: \texttt{http://www.ted.com/}.
 
-%LDA Paper, class notes, stargazer, ted
+%afinn111, porterstemmer
 
 \end{thebibliography}
 %----------------------------------------------------------------------------------------

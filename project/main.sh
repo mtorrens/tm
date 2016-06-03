@@ -21,7 +21,7 @@ then
   echo 'Generating readable text data:'
   Rscript src/format_design.R
 
-elif [ "$1" = "execute" ]
+elif [ "$1" = "analysis" ]
 then
   
   # Text mining
@@ -34,7 +34,7 @@ then
 
 else
 
-  echo "Please specify 'scrape' or 'execute' to use this script."
+  echo "Please specify 'scrape' or 'analysis' to use this script."
 
 fi
 # END
