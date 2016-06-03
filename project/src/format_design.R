@@ -74,4 +74,13 @@ json.talks <- paste(json.talks, rjson::toJSON(talks[nrow(talks), ]), '}')
 cat('Done!\n')
 cat(json.talks, file = 'data/scrapped_ted_talks.json')
 cat('File written: data/scrapped_ted_talks.json\n')
+
+# List of words that appear only once in the corpus
+words <- tolower(unlist(strsplit(gsub('\\W+', ' ', talks[, 'text']), ' ')))
+tt <- sort(table(bb))
+alone <- names(tt[tt == 1])
+cat(alone[1], '\n', file = 'input/lonely_words.txt')
+aux <- sapply(alone[2:length(alone)], function(x) {
+  cat(x, '\n', file = 'input/lonely_words.txt', append = TRUE)
+})
 # END OF SCRIPT

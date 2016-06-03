@@ -13,7 +13,7 @@ from math import log
 
 ################################################################################
 # Working directory
-print 'Script: LDA Analysis\nOrientative execution time: ~1H30'
+print 'Script: LDA Analysis\nOrientative execution time: ~1H'
 root = '/Users/miquel/Desktop/tm_ted'
 os.chdir(root)
 print 'Changed project path to: ' + root
@@ -33,6 +33,14 @@ compute_dtm = True
 print 'Stopwords used: input/stopwords.txt'
 with co.open('input/stopwords.txt', 'r', 'utf-8') as obj: 
   stopwords = set(obj.read().splitlines())
+
+# Rare words
+print 'Rare word list used: input/lonely_words.txt'
+with co.open('input/lonely_words.txt', 'r', 'utf-8') as obj: 
+  rarewords = obj.read().splitlines()
+  rarewords = [i.strip() for i in rarewords]
+#urare = set(stem_tokens(rarewords))
+urare = set(rarewords)
 
 # Harvard IV set
 print 'Dictionary used: input/inquirerbasic2.csv'
@@ -67,9 +75,13 @@ word_list = [text_list[i].split() for i in range(len(text_list))]
 print 'Cleaning wordlist...'
 clean_list = [clean_wordlist(word_list[i]) for i in range(len(word_list))]
 
+# Supress rare words
+print 'Supressing rare words...'
+freq_list = [remove_rare(clean_list[i]) for i in range(len(clean_list))]
+
 # Supress stopwords
 print 'Removing stopwords...'
-rel_list = [remove_stopwords(clean_list[i]) for i in range(len(clean_list))]
+rel_list = [remove_stopwords(freq_list[i]) for i in range(len(freq_list))]
 
 # Stem words and suppress possible remaining stopwords
 print 'Stemming...'
@@ -84,8 +96,7 @@ print 'Creating document term matrix (this may take a while)...'
 if compute_dtm:
   res = doc_term_matrix(stem_list)
   dtm = np.array(res)
-  print 'Done.'
-
+  print 'Done.\nDTM: {} docs and {} words'.format(dtm.shape[0], dtm.shape[1])
   # Save the document term matrix
   #savetxt_compact('data/dtm.csv', dtm, delimiter = ',')
   print 'Writing DTM file... data/dtm.csv'
@@ -102,6 +113,7 @@ else:
       #dtm.join(row)
   #dtm = np.array(res[1:len(res)], dtype = 'i')
   dtm = np.array(res[1:len(res)], dtype = 'f')
+  print 'DTM: {} docs and {} words'.format(dtm.shape[0], dtm.shape[1])
   res = res[1:len(res)]
   fres = []
   for elem in res:
@@ -160,7 +172,7 @@ df_vec = np.zeros(len(token_set))
 for i in res:
   df_vec = np.add(df_vec, [int(x > 0) for x in i])
 
-# Build an inverse document frequency vector.
+# Build an inverse document frequency vector
 idf_vec = [log(len(stem_list) / x) for x in df_vec]
 
 # Build the TF-IDF weighting matrix.
@@ -169,7 +181,8 @@ for i in tf_matrix:
   tfidf_vec = np.multiply(i, idf_vec)
   tfidf_matrix.append(tfidf_vec)
 
-tfidfm = np.array(tfidf_matrix)
+#tfidfm = np.array(tfidf_matrix)
+tfidfm = tfidf_matrix
 ################################################################################
 
 ################################################################################
@@ -177,6 +190,8 @@ tfidfm = np.array(tfidf_matrix)
 print 'Scoring documents and evaluating sentiment...'
 dtm_rank = dict_rank(our_dict, False, ntop = len(stem_list))
 tfidf_rank = dict_rank(our_dict, True, ntop = len(stem_list))
+#aux = [dtm_rank[i][0] == 0 for i in range(len(dtm_rank))]
+#np.where(np.array(aux) == True)
 
 # Sentiment
 sentiment = []
@@ -225,13 +240,13 @@ model.fit(dtm)
 topic_word = model.topic_word_
 topic_probs = model.doc_topic_
 
-n_twords = 8
+n_twords = 10
 vocab = tuple(token_set)
 for i, tdist in enumerate(topic_word):
   twords = np.array(vocab)[np.argsort(tdist)][:-(n_twords + 1):-1]
   print('Topic {}: {}'.format(i, ' '.join(twords)))
 
-for i in range(8):
+for i in range(10):
   print("{} (top topic: {})".format(talks.title[i], topic_probs[i].argmax()))
 
 # Save results

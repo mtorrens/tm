@@ -16,6 +16,14 @@ def remove_stopwords(tokens):
       filtered.append(token)
   return filtered
 
+def remove_rare(tokens):
+  global urare
+  filtered = []
+  for token in tokens:
+    if token not in urare:
+      filtered.append(token)
+  return filtered
+
 def unite_bigrams(tokens):
   bigs = nl.bigrams(tokens)
   result = map(lambda x: x[0] + '.' + x[1], bigs)
