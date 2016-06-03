@@ -1,24 +1,12 @@
 ################################################################################
 # Dependencies
 library(stargazer)
+library(tikzDevice)
+library(corrplot)
 
 # Working directory
 PATH <- '~/Desktop/tm_ted/'
 setwd(PATH)
-
-# LIST OF TOPICS table
-# Topic 00: society       : year women life day live school time peopl
-# Topic 01: environment   : water food year anim ocean speci fish plant
-# Topic 02: arts          : music play art applaus laughter book sound word
-# Topic 03: biology       : brain bodi human anim differ show move neuron
-# Topic 04: universe      : year time earth planet univers light space life
-# Topic 05: entertainment : know laughter peopl think littl time actual lot
-# Topic 06: politics      : peopl war world state countri polit govern power
-# Topic 07: technology    : comput technolog actual data inform work time world
-# Topic 08: urbanisation  : citi build design car energi work water place
-# Topic 09: economics     : peopl year world countri percent need dollar money
-# Topic 10: philosophy    : think peopl know human differ question time mean
-# Topic 11: health        : cell diseas patient cancer health drug actual year
 ################################################################################
 
 ################################################################################
@@ -74,9 +62,12 @@ topic.labs <- c('Society', 'Arts', 'Health', 'Universe', 'Environment',
 # For report
 plda.res <- lda.res
 colnames(plda.res) <- topic.labs
+# title <- 'Correlation of the probabilities of LDA Topics'
 title <- 'Correlation plot of the probabilities of LDA Topics (document level)'
-png('doc/lda_probs.png', height = 500, width = 500)
-corrplot::corrplot(cor(plda.res), mar = c(0, 0, 1, 0), title = title) 
+# png('doc/lda_probs.png', height = 500, width = 500)
+tikz('doc/lda_probs.tex', height = 5, width = 5)
+corrplot(cor(plda.res), mar = c(0, 0, 1, 0), title = '', tl.col = 'black') 
+mtext(paste('\\textbf{', title, '}', sep = ''), line = 0.1)
 dev.off()
 ################################################################################
 
@@ -173,15 +164,19 @@ design[, 'duration_sec'] <- NULL
 
 # Plot the explained variable
 xlab1 <- 'Number of visualisations'
-xlab2 <- 'Natural logarithm of the number of visualisations'
-title1 <- 'Distribution of number of views'
-title2 <- 'Distribtution of the log of the number of views'
-png('doc/log_normal_dist.png', width = 1000, height = 400)
+xlab2 <- 'Log of the number of visualisations'
+title1 <- 'Distribution of total views'
+title2 <- 'Distribtution of log of total views'
+# xlab2 <- 'Natural logarithm of the number of visualisations'
+# title1 <- 'Distribution of number of views'
+# title2 <- 'Distribtution of the log of the number of views'
+# png('doc/log_normal_dist.png', width = 1000, height = 400)
+tikz('doc/log_normal_dist.tex', height = 4, width = 6)
 par(mfrow = c(1, 2))
-hist(design[, 'views'], breaks = 150, xlab = xlab1, main = title1, col = 'darkblue')
-#plot(density(design[, 'views']), main = 'Density distribtution of number of views')
-hist(log(design[, 'views']), breaks = 150, xlab = xlab2, main = title2, col = 'darkblue')
-#plot(density(log(design[, 'views'])), main = title2)
+hist(design[, 'views'], breaks = 150, xlab = xlab1, main = '', col = 'darkblue')
+mtext(paste('\\textbf{', title1, '}', sep = ''), line = 1)
+hist(log(design[, 'views']), breaks = 150, xlab = xlab2, main = '', col = 'darkblue')
+mtext(paste('\\textbf{', title2, '}', sep = ''), line = 1)
 dev.off()
 ################################################################################
 
@@ -329,8 +324,11 @@ if (FALSE) {
   summary(lm(f04, data = design2))
 }
 
-# Final model (is_ingenious, prob_topic_04)
+################################################################################
+# Final model
+# Variable selection (references: is_ingenious, prob_topic_04)
 cols <- c('log_time', 'log_duration_sec', 'recurrent', 'log_dtm', 'log_tfidf',
+#cols <- c('log_time', 'recurrent', 'log_dtm', 'log_tfidf',
           'log_nwords', 'cum_sent',  'prob_topic_01', 'prob_topic_02',
           #'log_nwords', 'rel_sent',  'prob_topic_01', 'prob_topic_02',
           'prob_topic_03', 'prob_topic_05', 'prob_topic_06', 'prob_topic_07',
@@ -367,27 +365,25 @@ recipe <- as.formula(paste('log(views) ~', paste(scols, collapse = ' + ')))
 smodel <- lm(recipe, data = design)
 (sumsmod <- summary(smodel))
 
-latex.table <- stargazer(smodel, model, fmodel,
-                         no.space = TRUE, align = TRUE, single.row = TRUE)
+# LaTeX table
+labs <- c('Log of time posted (days)', 'Log duration of talk (seconds)',
+          'Recurrent speaker', 'Log of DTM score', 'Log of TF-IDF score',
+          'Log of number of words', 'Cumulative sentiment score',
+          paste('LDA topic prob.:', setdiff(topic.labs, 'Universe')),
+          paste('Tagged as:', c('fascinating', 'funny', 'inspiring',
+                                'jaw-dropping')),
+          paste('Tagged as topic:', c('AI', 'art', 'brain', 'business',
+                                      'change', 'conference', 'culture',
+                                      'design', 'global issues', 'music',
+                                      'politics', 'science', 'technology',
+                                      'war')))
 
-# # Polish LDA reference topic
-# if (FALSE) {
-#   for (i in 1:12) {
-#     kill <- paste('prob_topic', sprintf('%02.0f', i), sep = '_')
-#     preds <- setdiff(cols, kill)
-#     cat(rep('*', 80), '\n', sep = '')
-#     cat('MODEL WITHOUT PREDICTOR:', kill, '\n')
-#     cat(rep('*', 80), '\n', sep = '')
-#     form <- as.formula(paste('log(views) ~', paste(preds, collapse = ' + ')))
-#     print(summary(lm(form, data = design)))
-#     readline('Press <Enter> for next model ')
-#   }
-# }
-
-
-
-
-
-
-
-
+# Print LaTeX table
+stargazer(smodel, model, #fmodel,
+          title = 'OLS Regression results', covariate.labels = labs,
+          dep.var.labels = 'Logarithm of the number of visualisations',
+          no.space = TRUE, align = TRUE, single.row = TRUE,
+          out = 'doc/reg_table.tex', out.header = FALSE,
+          column.sep.width = '1pt')#, omit.stat = c('df'))
+################################################################################
+# END OF SCRIPT
