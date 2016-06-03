@@ -9,13 +9,8 @@ To run the code of this project in your local machine, you will need to clone th
 
 This script can be run in two modes:
 
- 1. *Scrapper mode*: to run the scrapper on the TED website. Execute from terminal:
- 
-`path/to/script/main.sh scrape`
- 
- 2. *Analysis mode*: to perform all the analysis, charts and tables of the project. Execute from terminal:
-
-`path/to/script/main.sh scrape`
+ 1. **Scrapper mode**: to run the scrapper on the TED website. Execute from terminal: `path/to/script/main.sh scrape`
+ 2. **Analysis mode**: to perform all the analysis, charts and tables of the project. Execute from terminal: `path/to/script/main.sh analysis`
 
 Please provide attention to the messages that appear on the screen throughout the execution, as they may have relevant information.
 
