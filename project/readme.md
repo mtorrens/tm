@@ -9,7 +9,7 @@ To run the code of this project in your local machine, you will need to clone th
 
 ### Software requirements
 
-The project was developed under a Unix environment and is not designed to run on Windows (not supported). The code runs partly in Python and partly R, and it was developed under ``python 2.7.10`` and ``R 3.2.2`. Compatibility with any other version *is not guaranteed* for either of them.
+The project was developed under a Unix environment and is not designed to run on Windows (not supported). The code runs partly in Python and partly R, and it was developed under ``python 2.7.10`` and ``R 3.2.2`. Compatibility with any other version **is not guaranteed** for either of them.
 
 Python library dependencies:
 
@@ -31,4 +31,4 @@ R package dependencies (only necessary for plots and tables):
  * `tikzDevice`
  * `corrplot`
 
-Be aware that the code *will not force the installation* of any dependency or any software piece whatsoever. They need to be installed manually for security reasons.
+Be aware that the code **will not force the installation** of any dependency or any software piece whatsoever. They need to be installed manually for security reasons.
