@@ -1,6 +1,11 @@
 #source('~/Desktop/tm_ted/src/format_design.R')
 # Working directory
-PATH <- '~/Desktop/tm_ted/'
+args <- commandArgs(trailingOnly = TRUE)
+if (length(args) == 0) {
+  PATH <- '~/Desktop/tm_ted/'
+} else {
+  PATH <- paste(system(toString(args[1]), intern = TRUE), '/', sep = '')
+}
 setwd(PATH)
 
 # Read the data and clean empty strings
@@ -77,7 +82,7 @@ cat('File written: data/scrapped_ted_talks.json\n')
 
 # List of words that appear only once in the corpus
 words <- tolower(unlist(strsplit(gsub('\\W+', ' ', talks[, 'text']), ' ')))
-tt <- sort(table(bb))
+tt <- sort(table(words))
 alone <- names(tt[tt == 1])
 cat(alone[1], '\n', file = 'input/lonely_words.txt')
 aux <- sapply(alone[2:length(alone)], function(x) {

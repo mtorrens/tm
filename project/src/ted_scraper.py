@@ -8,11 +8,19 @@
 
 ################################################################################
 # Libraries
+import os, re, sys
 import urllib2, urllib
 import urlparse  
 import collections
-import time, random
+import time, random, os
 from lxml import html  
+
+# Working directory
+try:
+  root = re.sub('\n', '', os.popen(sys.argv[1]).read())
+except:
+  root = '/Users/miquel/Desktop/tm_ted'
+os.chdir(root)
 
 # Set the root weblink and initialise the counter
 ted_root = 'http://www.ted.com/talks?page=1'
@@ -126,7 +134,7 @@ def scrap_talk(url):
       print '\rNumber of TED Talks scrapped: ' + str(adder)
       
       # Save the collected talk with the rest
-      with open('../data/scrapped_ted_talks.txt', 'a') as ted_file:
+      with open('data/scrapped_ted_talks.txt', 'a') as ted_file:
         ted_file.write(encode_str)
       
   # In case of error, print the error encountered

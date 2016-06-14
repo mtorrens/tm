@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 ################################################################################
 # Dependencies
-import os, re, csv, lda
+import sys, os, re, csv, lda
 import pandas as pd
 import nltk as nl
 import codecs as co
@@ -14,9 +14,12 @@ from math import log
 ################################################################################
 # Working directory
 print 'Script: LDA Analysis\nOrientative execution time: ~1H'
-root = '/Users/miquel/Desktop/tm_ted'
+try:
+  root = re.sub('\n', '', os.popen(sys.argv[1]).read())
+except:
+  root = '/Users/miquel/Desktop/tm_ted'
 os.chdir(root)
-print 'Changed project path to: ' + root
+print 'Detected project path to: ' + root
 
 # Load functions
 print 'Loaded functions: src/functions_cleaning.py'

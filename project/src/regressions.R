@@ -5,7 +5,12 @@ library(tikzDevice)
 library(corrplot)
 
 # Working directory
-PATH <- '~/Desktop/tm_ted/'
+args <- commandArgs(trailingOnly = TRUE)
+if (length(args) == 0) {
+  PATH <- '~/Desktop/tm_ted/'
+} else {
+  PATH <- paste(system(toString(args[1]), intern = TRUE), '/', sep = '')
+}
 setwd(PATH)
 ################################################################################
 
@@ -66,7 +71,8 @@ colnames(plda.res) <- topic.labs
 title <- 'Correlation plot of the probabilities of LDA Topics (document level)'
 # png('doc/lda_probs.png', height = 500, width = 500)
 tikz('doc/lda_probs.tex', height = 5, width = 5)
-corrplot(cor(plda.res), mar = c(0, 0, 1, 0), title = '', tl.col = 'black') 
+corrplot(cor(plda.res), method = 'color', mar = c(0, 0, 1, 0),
+             title = '', tl.col = 'black')#, type = 'upper') 
 mtext(paste('\\textbf{', title, '}', sep = ''), line = 0.1)
 dev.off()
 ################################################################################
@@ -341,6 +347,9 @@ cols <- c('log_time', 'log_duration_sec', 'recurrent', 'log_dtm', 'log_tfidf',
           'has_fellows', 'has_global', 'has_health', 'has_invention',
           'has_medicine', 'has_men', 'has_music', 'has_politics',
           'has_science', 'has_social', 'has_technology', 'has_war')
+
+# design[, 'log_dtm'] <- order(design[, 'log_dtm'])
+# design[, 'log_tfidf'] <- order(design[, 'log_tfidf'])
 
 # Model with everything
 recipe <- as.formula(paste('log(views) ~', paste(cols, collapse = ' + ')))
