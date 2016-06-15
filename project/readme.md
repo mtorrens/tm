@@ -12,7 +12,7 @@ This script can be run in two modes:
  
  `bash <path/to/script>/main.sh scrape`
  
- 2. **Analysis mode**: to perform all the analysis, charts and tables of the project. **This is the only command that needs to be executed if we want to replicate the exact results from the report**. Execute from terminal:
+ 2. **Analysis mode**: to perform all the analysis, charts and tables of the project. **This is the only command to execute if we want to replicate the exact results from the report**. Execute from terminal:
  
  `bash <path/to/script>/main.sh analysis`
 
